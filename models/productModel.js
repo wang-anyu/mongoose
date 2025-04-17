@@ -1,45 +1,21 @@
-const { Date } = require("mongoose");
 const mongoose = require("mongoose");
-const Supplier = require("./supplierModel");
 const { ObjectId } = require("mongodb");
-const supplySchema = mongoose.Schema(
-  {
-    price: {
-      type: Number,
-    },
-    date: {
-      type: Date,
-    },
-    supplierId: {
-      type: ObjectId,
-      ref: 'Suppliers'
-    }
-  });
 
-const productSchema = mongoose.Schema(
-  {
-    _id: {
-      type: ObjectId,
-    },
-    name: {
-      type: String,
-      required: [true, "Please add the user name address"],
-    },
-    description: {
-      type: String,
-    },
-    stock: {
-      type: Number,
-    },
-    tags: [String],
+const supplierSchema = new mongoose.Schema({
+  supplierId: { type: mongoose.Schema.Types.ObjectId, ref: 'Supplier' }, 
+  price: { type: Number, required: true },
+  date: { type: Date, required: true },
+});
 
-    suppliers: [{
-      type: supplySchema,
-    }],
-  },
-);
+const productSchema = new mongoose.Schema({
+  id: { type: String, required: true, unique: true },
+  name: { type: String, required: true },
+  description: { type: String, required: true },
+  tags: [String],
+  stock: { type: Number, required: true },
+  suppliers: [supplierSchema],
+},{collection:'Products'});
 
-// if you do not use the third argument
-// - mongoose will automatically convert 1 argument to "product" 
-// and will use this name as the collection name. 
-module.exports = mongoose.model("Products", productSchema, "Products");
+// 创建并导出 Product 模型
+const Product = mongoose.model("Product", productSchema);
+module.exports = Product;

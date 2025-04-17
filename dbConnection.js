@@ -1,6 +1,6 @@
 const mongoose = require("mongoose");
 
-const CONNECTION_STRING = 'mongodb://dev:dev@192.168.11.119:27017/WangShanniDB'
+const CONNECTION_STRING = 'mongodb://dev:dev@127.0.0.1:27017/WangShanniCmpWrld';
 
 const connectDb = async () => {
   try {
@@ -16,10 +16,11 @@ const connectDb = async () => {
       connect.connection.name
     );
   } catch (err) {
-    console.error("Execution error :",err);
+    console.log(err);
     process.exit(1);
   }
 };
 
 module.exports = connectDb;
 //connectDb();
+
